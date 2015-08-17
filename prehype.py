@@ -2,6 +2,8 @@ import csv
 import re
 import sys
 
+from pb_util import *
+
 matchup_path = 'data/CoNDOR Season 3 Matchmaking Private - 8-9 Matchups.csv'
 pb_path = 'data/CoNDOR Season 3 Scouting - 8-9 PB Sorted.csv'
 hype_path = 'out/week 2 prehype.csv'
@@ -45,27 +47,6 @@ for row in rdr:
 wrt = csv.writer(file(hype_path, 'wb'))
 
 wrt.writerow(['Max PB', 'Diff PB', 'Racer 1', 'Racer 2', 'Racer 1 PB', 'Racer 2 PB'])
-
-inf_ms = 9999999
-
-def ms_of_pb(pb):
-    if pb == 'n/a':
-        return inf_ms
-
-    parts = re.split('[:.]', pb)
-    assert len(parts) == 3
-    return 10 * (int(parts[2]) + 100 * (int(parts[1]) + 60 * int(parts[0])))
-
-def pb_of_ms(ms):
-    ms /= 10
-
-    cs = ms % 100
-    ms /= 100
-    s = ms % 60
-    ms /= 60
-    m = ms
-
-    return '%02d:%02d.%02d' % (m, s, cs)
 
 recs.sort()
 for max_pb_old, r1, r2 in recs:

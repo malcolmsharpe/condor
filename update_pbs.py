@@ -4,50 +4,60 @@ import urllib2
 import sys
 import time
 
-in_path = 'data/CoNDOR Season 3 Scouting - Copy of 8-2 Field.csv'
-out_path = 'out/8-9 Field.csv'
+from pb_util import *
 
-REQ_DELAY = 5
-def req_pb(toofz):
-    print 'Waiting %d seconds before req' % REQ_DELAY
-    time.sleep(REQ_DELAY)
+leaderboard_url = 'http://steamcommunity.com/stats/247080/leaderboards/740000/?xml=1'
 
-    print 'Sending req'
-    f = urllib2.urlopen(toofz)
+#in_path = 'data/CoNDOR Season 3 Scouting - Copy of 8-2 Field.csv'
+in_path = 'data/CoNDOR Season 3 Scouting - 8-9 PB Sorted.csv'
+out_path = 'out/8-16 Field.csv'
 
-    return parse_pb(f)
+f = urllib2.urlopen(leaderboard_url)
+soup = BeautifulSoup(f)
 
-def parse_pb(f):
-    # <tr data-character="Cadence" data-run="Speed" data-lbid="740000">
-    #   <td>
-    #     <a href="/leaderboards/cadence/speed?id=76561198067568785">Cadence</a>
-    #   </td>
-    #   <td> 66 </td>
-    #   <td> 07:31.45 </td>
-    # </tr>
+pb_map = {}
 
-    soup = BeautifulSoup(f, 'html.parser')
-    el = soup.find(attrs={'data-character': 'Cadence', 'data-run': 'Speed'})
-    pb = el.find_all('td')[-1].text.strip()
-    if pb == '--':
-        pb = 'n/a'
+for entry in soup.find_all('entry'):
+    #<entry>
+    #    <steamid>76561197998362244</steamid>
+    #    <score>99698417</score>
+    #    <rank>1</rank>
+    #    <ugcid>700658678899103176</ugcid>
+    #    <details>0400000006000000</details>
+    #</entry>
 
-    return pb
+    steamid = entry.find('steamid').text
+    score = entry.find('score').text
+    speed_ms = 100000000 - int(score)
+
+    pb_map[steamid] = speed_ms
 
 rdr = csv.reader(file(in_path))
 rows = list(rdr)
 
 wrt = csv.writer(file(out_path, 'wb'))
-wrt.writerow(rows[0])
+wrt.writerow( ['Name', 'toofz', 'PB', 'Change', 'Comments'] )
 
-for row in rows[1:]:
+rows = rows[1:]
+rows.sort(key=lambda row: row[2])
+
+for row in rows:
     name, toofz, pb, comments = row
 
-    try:
-        pb = req_pb(toofz)
-    except Exception, e:
-        print 'Req failed: ', e
-        pb = 'failed'
+    old_pb_ms = ms_of_pb(pb)
 
-    print 'Writing: ', name, toofz, pb, comments
-    wrt.writerow( (name, toofz, pb, comments) )
+    steamid = unicode(toofz.split('/')[-1])
+    pb_ms = pb_map[steamid]
+
+    pb = pb_of_ms(pb_ms)
+
+    change_ms = max(old_pb_ms - pb_ms, 0)
+    if change_ms < 10:
+        change = ''
+    elif old_pb_ms == inf_ms:
+        change = 'new'
+    else:
+        change = pb_of_ms(change_ms)
+
+    print 'Writing: ', name, toofz, pb, change, comments
+    wrt.writerow( (name, toofz, pb, change, comments) )
