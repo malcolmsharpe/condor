@@ -4,15 +4,25 @@ import sys
 
 from pb_util import *
 
-matchup_path = 'data/CoNDOR Season 3 Matchmaking Private - 8-9 Matchups.csv'
-pb_path = 'data/CoNDOR Season 3 Scouting - 8-9 PB Sorted.csv'
-hype_path = 'out/week 2 prehype.csv'
+matchup_path = 'data/CoNDOR Season 3 Matchmaking Private - 8-16 Matchups.csv'
+pb_path = 'data/CoNDOR Season 3 Scouting - 8-16 PB Sorted.csv'
+hype_path = 'out/week 3 prehype.csv'
+posthype_path = 'out/week 3 hype.csv'
 
 pb_map = {}
+cast_map = {}
+
 rdr = csv.reader(file(pb_path))
 rows = list(rdr)
 for row in rows[1:]:
-    pb_map[row[0].lower()] = row[2]
+    name = row[0].lower()
+    pb_map[name] = row[2]
+
+    casts = row[4]
+    if not casts.strip():
+        casts = '0'
+    casts = int(casts)
+    cast_map[name] = casts
 
 recs = []
 
@@ -44,14 +54,23 @@ for row in rdr:
         recs.append( (max(pb_1, pb_2), racer_1, racer_2) )
 
 
+print 'Generated %d records' % len(recs)
+
 wrt = csv.writer(file(hype_path, 'wb'))
 
-wrt.writerow(['Max PB', 'Diff PB', 'Racer 1', 'Racer 2', 'Racer 1 PB', 'Racer 2 PB'])
+wrt.writerow(['Max PB', 'Diff PB', 'Racer 1', 'Racer 2', 'Racer 1 PB', 'Racer 2 PB', 'Racer 1 Casts', 'Racer 2 Casts'])
+
+wrtpost = csv.writer(file(posthype_path, 'wb'))
+
+wrtpost.writerow(['Max PB', 'Diff PB', 'Racer 1', 'Racer 2', 'Racer 1 PB', 'Racer 2 PB'])
 
 recs.sort()
 for max_pb_old, r1, r2 in recs:
     pb1 = pb_map[r1.lower()]
     pb2 = pb_map[r2.lower()]
+
+    casts1 = cast_map[r1.lower()]
+    casts2 = cast_map[r2.lower()]
 
     ms1 = ms_of_pb(pb1)
     ms2 = ms_of_pb(pb2)
@@ -65,4 +84,5 @@ for max_pb_old, r1, r2 in recs:
         max_pb = pb_of_ms(max_ms)
         diff_pb = pb_of_ms(diff_ms)
 
-    wrt.writerow( (max_pb, diff_pb, r1, r2, pb1, pb2) )
+    wrt.writerow( (max_pb, diff_pb, r1, r2, pb1, pb2, casts1, casts2) )
+    wrtpost.writerow( (max_pb, diff_pb, r1, r2, pb1, pb2) )
