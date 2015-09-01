@@ -2,6 +2,7 @@ import csv
 import re
 import sys
 
+from common import *
 from pb_util import *
 
 matchup_path = 'data/CoNDOR Season 3 Matchmaking Private - 8-16 Matchups.csv'
@@ -25,14 +26,6 @@ for row in rows[1:]:
     cast_map[name] = casts
 
 recs = []
-
-def retouch_racer(name):
-    name = name.strip()
-    if name == 'MacKirby':
-        return 'MacKirbyTwitch'
-    if name == 'Lancer873':
-        return 'Lancer'
-    return name
 
 rdr = csv.reader(file(matchup_path))
 for row in rdr:
