@@ -4,9 +4,9 @@ import sys
 from common import *
 from pb_util import *
 
-matchup_path = 'data/CoNDOR Season 3 Matchup Chart - Week 4.csv'
-pb_path = 'data/CoNDOR Season 3 Scouting - 8-23 PB Sorted.csv'
-hype_path = 'out/week 4 hype.csv'
+matchup_path = 'data/CoNDOR Season 3 Matchup Chart - Week 5.csv'
+pb_path = 'data/CoNDOR Season 3 Scouting - 9-1 PB Sorted.csv'
+hype_path = 'out/week 5 hype.csv'
 
 pb_map = {}
 rdr = csv.reader(file(pb_path))
@@ -20,7 +20,7 @@ rdr = csv.reader(file(matchup_path))
 for row in rdr:
     racer_1 = retouch_racer(row[1])
     racer_2 = retouch_racer(row[2])
-    casted = row[3]
+    casted = row[4]
 
     pb_1 = pb_map.get(racer_1.lower())
     pb_2 = pb_map.get(racer_2.lower())
