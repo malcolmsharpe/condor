@@ -1,0 +1,14 @@
+Open bayeselo interface.
+
+Use "readpgn" to read it. TIP: there is no error for missing file, it just reports 0 games read.
+
+Set advantage and drawelo to 0.
+
+Compute with "mm".
+
+View ratings with "ratings".
+
+Write to file via "ratings >whatever.txt". Lack of space after the redirect is important.
+
+NOTE: The ratings when I tried it seemed reasonably insensitive to prior. A little bit of standings shuffle
+would occur but nothing crazy.
