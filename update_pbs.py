@@ -9,8 +9,8 @@ from pb_util import *
 leaderboard_url = 'http://steamcommunity.com/stats/247080/leaderboards/740000/?xml=1'
 
 #in_path = 'data/CoNDOR Season 3 Scouting - Copy of 8-2 Field.csv'
-in_path = 'data/CoNDOR Season 3 Scouting - 8-23 PB Sorted.csv'
-out_path = 'out/9-1 Field.csv'
+in_path = 'data/CoNDOR Season 3 Scouting - 9-1 PB Sorted.csv'
+out_path = 'out/9-8 Field.csv'
 
 f = urllib2.urlopen(leaderboard_url)
 soup = BeautifulSoup(f)
