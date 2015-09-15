@@ -2,6 +2,8 @@ Open bayeselo interface.
 
 Use "readpgn" to read it. TIP: there is no error for missing file, it just reports 0 games read.
 
+Type "elo" to enter elo computation interface.
+
 Set advantage and drawelo to 0.
 
 Compute with "mm".

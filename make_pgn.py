@@ -25,16 +25,24 @@ def canon(name):
 
 decanon_map = {}
 
+# forfeits, no-shows, intentional draws
 noplays = set([
+    # week 3
     ('ghost_butts', 'kageyuuki'),
     ('canadianbac0nz', 'ailoodee'),
     ('gfitty', 'zeldaethan9'),
+    # week 4
     ('ghost_butts', 'violetweavile'),
     ('imwaytopunny', 'annierelli'),
     ('ognos', 'blueblimpsc'),
     ('flygluffet', 'morphobutterfly'),
+    # week 5
     ('annierelli', 'ghost_butts'),
     ('jay__te', 'violetweavile'),
+    # week 6
+    ('miltrivd', 'paratroopa1'),
+    ('morphobutterfly', 'ailoodee'),
+    ('bmz_loop', 'emuemu7'),
 ])
 
 def is_noplay(a, b):
@@ -43,7 +51,7 @@ def is_noplay(a, b):
     return (a,b) in noplays or (b,a) in noplays
 
 standings_path = 'data/CoNDOR Season 3 Matchup Chart - Standings.csv'
-pgn_path = 'out/condor_s3.pgn'
+pgn_path = 'out/condor_s3_week7.pgn'
 
 rdr = csv.reader(file(standings_path))
 rows = list(rdr)
