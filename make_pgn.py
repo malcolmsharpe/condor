@@ -43,6 +43,8 @@ noplays = set([
     ('miltrivd', 'paratroopa1'),
     ('morphobutterfly', 'ailoodee'),
     ('bmz_loop', 'emuemu7'),
+    # week 7
+    ('jay__te', 'ratata_ratata'),
 ])
 
 def is_noplay(a, b):
@@ -50,13 +52,15 @@ def is_noplay(a, b):
     b = canon(b)
     return (a,b) in noplays or (b,a) in noplays
 
-standings_path = 'data/CoNDOR Season 3 Matchup Chart - Standings.csv'
-pgn_path = 'out/condor_s3_week7.pgn'
+standings_path = 'data/standings_week8.csv'
+pgn_path = 'out/condor_s3_week8.pgn'
 
 rdr = csv.reader(file(standings_path))
 rows = list(rdr)
 
 match_table = collections.defaultdict(lambda: {})
+
+nweeks = 9
 
 for row in rows:
     rank = row[0]
@@ -69,8 +73,8 @@ for row in rows:
     print 'Reading racer %s' % racer
     decanon_map[canon(racer)] = racer
 
-    points = row[3:11]
-    opps = row[11:19]
+    points = row[3:3+nweeks]
+    opps = row[3+nweeks:3+2*nweeks]
 
     for point, opp in zip(points, opps):
         if ignore_opp(opp):
