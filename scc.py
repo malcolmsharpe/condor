@@ -11,7 +11,7 @@ def dfs(v):
     mark.add(v)
 
     for w in match_table[v]:
-        if match_table[v][w] > 0:
+        if match_table[v][w] > 1:
             dfs(w)
 
     fin.append(v)
@@ -27,7 +27,7 @@ def revdfs(v):
     mark.add(v)
 
     for w in match_table[v]:
-        if match_table[w][v] > 0:
+        if match_table[w][v] > 1:
             revdfs(w)
 
     comp.add(v)

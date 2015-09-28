@@ -20,7 +20,7 @@ while q:
         v = q.pop()
 
         for w in match_table[v]:
-            if match_table[v][w] > 0:
+            if match_table[v][w] > 1:
                 if w not in prev:
                     prev[w] = v
                     q2.append(w)

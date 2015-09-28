@@ -47,8 +47,6 @@ noplays = set([
     ('jay__te', 'ratata_ratata'),
     # week 8
     ('ailoodee', 'bmz_loop'),
-    # DELETE ME
-    ('flygluffet', 'gfitty'),
 ])
 
 def is_noplay(a, b):
