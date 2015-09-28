@@ -45,6 +45,8 @@ noplays = set([
     ('bmz_loop', 'emuemu7'),
     # week 7
     ('jay__te', 'ratata_ratata'),
+    # week 8
+    ('ailoodee', 'bmz_loop'),
 ])
 
 def is_noplay(a, b):
@@ -52,8 +54,8 @@ def is_noplay(a, b):
     b = canon(b)
     return (a,b) in noplays or (b,a) in noplays
 
-standings_path = 'data/standings_week8.csv'
-pgn_path = 'out/condor_s3_week8.pgn'
+standings_path = 'data/standings_week9.csv'
+pgn_path = 'out/condor_s3_week9.pgn'
 
 rdr = csv.reader(file(standings_path))
 rows = list(rdr)
