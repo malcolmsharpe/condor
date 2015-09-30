@@ -61,6 +61,7 @@ rdr = csv.reader(file(standings_path))
 rows = list(rdr)
 
 match_table = collections.defaultdict(lambda: {})
+totals = {}
 
 nweeks = 9
 
@@ -71,6 +72,8 @@ for row in rows:
 
     if not re.match('[0-9]+', rank):
         continue
+
+    totals[ canon(racer) ] = float(total)
 
     print 'Reading racer %s' % racer
     decanon_map[canon(racer)] = racer
