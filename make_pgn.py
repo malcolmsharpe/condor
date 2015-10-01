@@ -4,6 +4,8 @@ import re
 
 from standings import *
 
+pgn_path = 'out/condor_s3_final.pgn'
+
 print 'Writing PGN'
 f = file(pgn_path, 'w')
 

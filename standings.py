@@ -2,10 +2,13 @@ import collections
 import csv
 import re
 
-def ignore_opp(name):
+def dropped_opp(name):
     return ('withdrawn' in name
         or 'removed' in name
-        or 'dropped' in name
+        or 'dropped' in name)
+
+def ignore_opp(name):
+    return (dropped_opp(name)
         or name == ''
         or name == '(bye)'
         or name == '--')
@@ -54,14 +57,14 @@ def is_noplay(a, b):
     b = canon(b)
     return (a,b) in noplays or (b,a) in noplays
 
-standings_path = 'data/standings_week9.csv'
-pgn_path = 'out/condor_s3_week9.pgn'
+standings_path = 'data/standings_final.csv'
 
 rdr = csv.reader(file(standings_path))
 rows = list(rdr)
 
 match_table = collections.defaultdict(lambda: {})
 totals = {}
+dropped = set()
 
 nweeks = 9
 
@@ -82,6 +85,9 @@ for row in rows:
     opps = row[3+nweeks:3+2*nweeks]
 
     for point, opp in zip(points, opps):
+        if dropped_opp(opp):
+            dropped.add(canon(racer))
+
         if ignore_opp(opp):
             print '    Ignoring opponent %r' % opp
             continue
